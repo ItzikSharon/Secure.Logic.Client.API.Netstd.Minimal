@@ -1,0 +1,1 @@
+# Secure.Logic.Client.API.Netstd.Minimal
