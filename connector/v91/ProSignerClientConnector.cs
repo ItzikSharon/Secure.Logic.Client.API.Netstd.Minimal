@@ -28,7 +28,7 @@ namespace securelogic.prosigner.client.api.connector.v91
             return (this.mActiveSrvURL == this.mPrimarySrvURL) ? this.mSecondarySrvURL: this.mPrimarySrvURL;
         }
         // ============================================================================
-        public ProSignerClientConnector(string primarySrvURL, string secondarySrvURL) {
+        public ProSignerClientConnector(string primarySrvURL, string secondarySrvURL=null) {
             if (string.IsNullOrEmpty(primarySrvURL))
                 throw new Exception("Invalid Primary Server URL");
 
