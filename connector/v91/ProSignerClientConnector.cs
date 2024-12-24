@@ -1,5 +1,9 @@
 ﻿using secure.logic.client.api.netstd.minimal.rest.v91;
+using System.Runtime.InteropServices;
+using System.Security.Claims;
+using System;
 using static secure.logic.client.api.netstd.minimal.rest.v91.APIV91;
+using securelogic.prosigner.client.utils;
 
 
 namespace securelogic.prosigner.client.api.connector.v91
@@ -11,12 +15,14 @@ namespace securelogic.prosigner.client.api.connector.v91
         private string mActiveSrvURL = string.Empty;
         private string mAccessToken = string.Empty;
 
-        public override string ToString(){
+        public override string ToString()
+        {
             return $"ProSignerClientConnector=> [Primary={this.mPrimarySrvURL}], [Secondary={this.mSecondarySrvURL}]";
         }
         // ============================================================================
-        private void Switch(string url){
-                this.mActiveSrvURL = (url == this.mPrimarySrvURL) ? this.mSecondarySrvURL : this.mPrimarySrvURL;
+        private void Switch(string url)
+        {
+            this.mActiveSrvURL = (url == this.mPrimarySrvURL) ? this.mSecondarySrvURL : this.mPrimarySrvURL;
         }
         // ============================================================================
         private string GetActive()
@@ -24,18 +30,23 @@ namespace securelogic.prosigner.client.api.connector.v91
             return this.mActiveSrvURL;
         }
         // ============================================================================
-        private string GetStandby(){
-            return (this.mActiveSrvURL == this.mPrimarySrvURL) ? this.mSecondarySrvURL: this.mPrimarySrvURL;
+        private string GetStandby()
+        {
+            return (this.mActiveSrvURL == this.mPrimarySrvURL) ? this.mSecondarySrvURL : this.mPrimarySrvURL;
         }
         // ============================================================================
-        public ProSignerClientConnector(string primarySrvURL, string secondarySrvURL=null) {
+        public ProSignerClientConnector(string primarySrvURL, string secondarySrvURL = null)
+        {
             if (string.IsNullOrEmpty(primarySrvURL))
                 throw new Exception("Invalid Primary Server URL");
 
             this.mPrimarySrvURL = primarySrvURL;
-            if (!string.IsNullOrEmpty(secondarySrvURL)){
+            if (!string.IsNullOrEmpty(secondarySrvURL))
+            {
                 this.mSecondarySrvURL = secondarySrvURL;
-            }else{
+            }
+            else
+            {
                 this.mSecondarySrvURL = primarySrvURL;
             }
 
@@ -43,20 +54,24 @@ namespace securelogic.prosigner.client.api.connector.v91
             this.mActiveSrvURL = this.mPrimarySrvURL;
         }
         // ============================================================================
-        public APIV91.STATUS_REPLY Status(){
+        public APIV91.STATUS_REPLY Status()
+        {
             APIV91.STATUS_REPLY reply = new APIV91.STATUS_REPLY();
-            try{
+            try
+            {
                 reply = ProSignerRESTConnector.STATUS(this.GetActive(), new APIV91.STATUS_REQUEST());
-                if (reply.return_code != 0){
+                if (reply.return_code != 0)
+                {
                     this.Switch(this.GetActive());
                     reply = ProSignerRESTConnector.STATUS(this.GetActive(), new APIV91.STATUS_REQUEST());
                 }
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 reply.return_code = (int)RETURN_CODES.GENERAL_ERROR;
-                reply.return_msg= e.ToString();
+                reply.return_msg = e.ToString();
             }
-            return reply ;
+            return reply;
         }
         // ============================================================================
         public APIV91.API_LOGIN_REPLY APILogin(string apiID, string apiKey)
@@ -133,6 +148,25 @@ namespace securelogic.prosigner.client.api.connector.v91
                 reply.return_msg = e.ToString();
             }
             return reply;
+        }     // ============================================================================
+        public APIV91.SIGN_PDF_REPLY SignMultiPDF(APIV91.MULTI_SIGN_PDF_REQUEST request, string accessToken)
+        {
+            APIV91.SIGN_PDF_REPLY reply = new APIV91.SIGN_PDF_REPLY();
+            try
+            {
+                reply = ProSignerRESTConnector.SIGN_MULTI_PDF(this.GetActive(), accessToken, request);
+                if (reply.return_code != 0)
+                {
+                    this.Switch(this.GetActive());
+                    reply = ProSignerRESTConnector.SIGN_MULTI_PDF(this.GetActive(), accessToken, request);
+                }
+            }
+            catch (Exception e)
+            {
+                reply.return_code = (int)APIV91.RETURN_CODES.GENERAL_ERROR;
+                reply.return_msg = e.ToString();
+            }
+            return reply;
         }
         // ============================================================================
         public APIV91.SIGN_XML_REPLY SignXML(APIV91.SIGN_XML_REQUEST request, string accessToken)
@@ -196,5 +230,25 @@ namespace securelogic.prosigner.client.api.connector.v91
             return reply;
         }
         // ============================================================================
+        public APIV91.SIGN_PDF_REPLY SignImage(APIV91.SIGN_IMAGE_REQUEST request, string accessToken)
+        {
+
+            APIV91.SIGN_PDF_REPLY reply = new APIV91.SIGN_PDF_REPLY();
+            try
+            {
+                reply = ProSignerRESTConnector.SIGN_IMAGE(this.GetActive(), accessToken, request);
+                if (reply.return_code != 0)
+                {
+                    this.Switch(this.GetActive());
+                    reply = ProSignerRESTConnector.SIGN_IMAGE(this.GetActive(), accessToken, request);
+                }
+            }
+            catch (Exception e)
+            {
+                reply.return_code = (int)RETURN_CODES.GENERAL_ERROR;
+                reply.return_msg = e.ToString();
+            }
+            return reply;
+        }
     }
 }

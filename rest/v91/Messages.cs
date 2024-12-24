@@ -295,8 +295,74 @@ namespace secure.logic.client.api.netstd.minimal.rest.v91
             public bool certificate_is_valid { get; set; } = false;
         }
 
+        public class MULTI_SIGN_PDF_REPLY : MESSAGE_REPLY
+        {
+            public string value_b64 { get; set; } = string.Empty;
+        }
+
+        public class MULTI_SIGN_PDF_REQUEST
+        {
+            public string cu_id { get; set; } = string.Empty;
+            public string cu_pass { get; set; } = string.Empty;
+            public int token_index { get; set; } = 0;
+            public string value_b64 { get; set; } = string.Empty;
+            public string file_name { get; set; } = string.Empty;
+            public int image_mode { get; set; } = (int)IMAGE_MODE.NO_VISUAL_MARK;
+            public int policy_id { get; set; } = 0; //see securelogic.prosigner.signer.core.common.SignaturePolicyManager
+            public string image_b64 { get; set; } = string.Empty;
+            public int width { get; set; } = 50;
+            public int height { get; set; } = 50;
+            public int x_position { get; set; } = 10;
+            public int y_position { get; set; } = 10;
+            public string reason { get; set; } = "Authenticate Document";
+            public string location { get; set; } = "IL";
+            public string sig_page { get; set; } = "last";
+            public string font_name { get; set; } = FONT_ID.HELVETICA.ToString();
+            public int font_size { get; set; } = 8;
+        }
+
+        public class SIGN_IMAGE_REQUEST
+        {
+            public string cu_id { get; set; } = string.Empty;
+            public string cu_pass { get; set; } = string.Empty;
+            public int token_index { get; set; } = 0;
+            public string value_b64 { get; set; } = string.Empty;
+            public string file_name { get; set; } = string.Empty;
+            public int sigtype_id { get; set; } = 0;
 
 
+            //ImageToPdf params
+            public int image_xpos { get; set; } = 0;
+            public int image_ypos { get; set; } = 0;
+
+
+            //signature settings with defaults
+            public int image_mode { get; set; } = (int)IMAGE_MODE.NO_VISUAL_MARK;
+            public int policy_id { get; set; } = 1; /* Possible values:  PADES_B_LEVEL=1 (DEFAULT) | PADES_B_LEVEL_PLUS_CHAIN=3 | PADES_LT_LEVEL=13 | PADES_LTA_LEVEL=15 | PADES_B_LEVEL_IGNOR_EXISTING_SIGNATURES=17*/
+            public string image_b64 { get; set; } = string.Empty;
+            public int width { get; set; } = 50;
+            public int height { get; set; } = 50;
+            public int x_position { get; set; } = 10;
+            public int y_position { get; set; } = 10;
+            public string reason { get; set; } = "Authenticate Document";
+            public string location { get; set; } = "IL";
+            public string sig_page { get; set; } = "last";
+            public string font_name { get; set; } = FONT_ID.HELVETICA.ToString();
+            public int font_size { get; set; } = 8;
+        }
+
+        public enum IMAGE_MODE
+        {
+            NO_VISUAL_MARK = 0,
+            VISUAL_MARK_IMAGE_ONLY = 1,
+            VISUAL_MARK_TEXT_WITH_IMAGE = 2,
+            VISUAL_MARK_TEXT_OVERLAY_IMAGE = 3
+        }
+
+        public enum FONT_ID
+        {
+            HELVETICA = 0, HELVETICA_BOLD, TIMES_ROMAN, TIMES_ROMAN_BOLD, COURIER, COURIER_BOLD
+        }
 
         public enum RETURN_CODES
         {

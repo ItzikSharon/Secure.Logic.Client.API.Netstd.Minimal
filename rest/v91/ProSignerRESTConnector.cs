@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Security.Claims;
 using System.Text;
 using static secure.logic.client.api.netstd.minimal.rest.v91.APIV91;
 
@@ -18,10 +19,17 @@ namespace secure.logic.client.api.netstd.minimal.rest.v91
                 var httpRequest = new HttpRequestMessage(HttpMethod.Post, finalURL);
                 httpRequest.Content = new StringContent(requestAsJson, Encoding.UTF8, "application/json");
                 Task<HttpResponseMessage> httpResponse = httpClient.SendAsync(httpRequest);
-                //httpResponse.Wait();
                 Task<string> responseAsJson = httpResponse.Result.Content.ReadAsStringAsync();
-                STATUS_REPLY rv = JsonConvert.DeserializeObject<STATUS_REPLY>(responseAsJson.Result);
-                return rv;
+                STATUS_REPLY? rv = JsonConvert.DeserializeObject<STATUS_REPLY>(responseAsJson.Result);
+                if (rv != null)
+                {
+                    return rv;
+                }
+                return new STATUS_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
             }
             catch
             {
@@ -43,10 +51,17 @@ namespace secure.logic.client.api.netstd.minimal.rest.v91
                 var httpRequest = new HttpRequestMessage(HttpMethod.Post, finalURL);
                 httpRequest.Content = new StringContent(requestAsJson, Encoding.UTF8, "application/json");
                 Task<HttpResponseMessage> httpResponse = httpClient.SendAsync(httpRequest);
-                //httpResponse.Wait();
                 Task<string> responseAsJson = httpResponse.Result.Content.ReadAsStringAsync();
-                API_LOGIN_REPLY rv = JsonConvert.DeserializeObject<API_LOGIN_REPLY>(responseAsJson.Result);
-                return rv;
+                API_LOGIN_REPLY? rv = JsonConvert.DeserializeObject<API_LOGIN_REPLY>(responseAsJson.Result);
+                if (rv != null)
+                {
+                    return rv;
+                }
+                return new API_LOGIN_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
             }
             catch
             {
@@ -70,8 +85,16 @@ namespace secure.logic.client.api.netstd.minimal.rest.v91
                 httpRequest.Content = new StringContent(requestAsJson, Encoding.UTF8, "application/json");
                 Task<HttpResponseMessage> httpResponse = httpClient.SendAsync(httpRequest);
                 Task<string> responseAsJson = httpResponse.Result.Content.ReadAsStringAsync();
-                SIGN_PDF_REPLY rv = JsonConvert.DeserializeObject<SIGN_PDF_REPLY>(responseAsJson.Result);
-                return rv;
+                SIGN_PDF_REPLY? rv = JsonConvert.DeserializeObject<SIGN_PDF_REPLY>(responseAsJson.Result);
+                if (rv != null)
+                {
+                    return rv;
+                }
+                return new SIGN_PDF_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
             }
             catch
             {
@@ -95,8 +118,16 @@ namespace secure.logic.client.api.netstd.minimal.rest.v91
                 httpRequest.Content = new StringContent(requestAsJson, Encoding.UTF8, "application/json");
                 Task<HttpResponseMessage> httpResponse = httpClient.SendAsync(httpRequest);
                 Task<string> responseAsJson = httpResponse.Result.Content.ReadAsStringAsync();
-                SIGN_CMS_REPLY rv = JsonConvert.DeserializeObject<SIGN_CMS_REPLY>(responseAsJson.Result);
-                return rv;
+                SIGN_CMS_REPLY? rv = JsonConvert.DeserializeObject<SIGN_CMS_REPLY>(responseAsJson.Result);
+                if (rv != null)
+                {
+                    return rv;
+                }
+                return new SIGN_CMS_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
             }
             catch
             {
@@ -119,10 +150,17 @@ namespace secure.logic.client.api.netstd.minimal.rest.v91
                 var httpRequest = new HttpRequestMessage(HttpMethod.Post, finalURL);
                 httpRequest.Content = new StringContent(requestAsJson, Encoding.UTF8, "application/json");
                 Task<HttpResponseMessage> httpResponse = httpClient.SendAsync(httpRequest);
-                //httpResponse.Wait();
                 Task<string> responseAsJson = httpResponse.Result.Content.ReadAsStringAsync();
-                CONFIG_REPLY rv = JsonConvert.DeserializeObject<CONFIG_REPLY>(responseAsJson.Result);
-                return rv;
+                CONFIG_REPLY? rv = JsonConvert.DeserializeObject<CONFIG_REPLY>(responseAsJson.Result);
+                if (rv != null)
+                {
+                    return rv;
+                }
+                return new CONFIG_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
             }
             catch
             {
@@ -147,8 +185,16 @@ namespace secure.logic.client.api.netstd.minimal.rest.v91
                 httpRequest.Content = new StringContent(requestAsJson, Encoding.UTF8, "application/json");
                 Task<HttpResponseMessage> httpResponse = httpClient.SendAsync(httpRequest);
                 Task<string> responseAsJson = httpResponse.Result.Content.ReadAsStringAsync();
-                SIGN_XML_REPLY rv = JsonConvert.DeserializeObject<SIGN_XML_REPLY>(responseAsJson.Result);
-                return rv;
+                SIGN_XML_REPLY? rv = JsonConvert.DeserializeObject<SIGN_XML_REPLY>(responseAsJson.Result);
+                if (rv != null)
+                {
+                    return rv;
+                }
+                return new SIGN_XML_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
             }
             catch
             {
@@ -172,8 +218,16 @@ namespace secure.logic.client.api.netstd.minimal.rest.v91
                 httpRequest.Content = new StringContent(requestAsJson, Encoding.UTF8, "application/json");
                 Task<HttpResponseMessage> httpResponse = httpClient.SendAsync(httpRequest);
                 Task<string> responseAsJson = httpResponse.Result.Content.ReadAsStringAsync();
-                SIGN_HASH_REPLY rv = JsonConvert.DeserializeObject<SIGN_HASH_REPLY>(responseAsJson.Result);
-                return rv;
+                SIGN_HASH_REPLY? rv = JsonConvert.DeserializeObject<SIGN_HASH_REPLY>(responseAsJson.Result);
+                if (rv != null)
+                {
+                    return rv;
+                }
+                return new SIGN_HASH_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
             }
             catch
             {
@@ -184,7 +238,7 @@ namespace secure.logic.client.api.netstd.minimal.rest.v91
                 };
             }
         }
-        internal static SIGN_CONFIG_REPLY GET_SIGN_CONFIG(string serverURL, string accessToken, SIGN_CONFIG_REQUEST request, int timeout = 3)
+        public static SIGN_CONFIG_REPLY GET_SIGN_CONFIG(string serverURL, string accessToken, SIGN_CONFIG_REQUEST request, int timeout = 3)
         {
             try
             {
@@ -196,14 +250,90 @@ namespace secure.logic.client.api.netstd.minimal.rest.v91
                 var httpRequest = new HttpRequestMessage(HttpMethod.Post, finalURL);
                 httpRequest.Content = new StringContent(requestAsJson, Encoding.UTF8, "application/json");
                 Task<HttpResponseMessage> httpResponse = httpClient.SendAsync(httpRequest);
-                //httpResponse.Wait();
                 Task<string> responseAsJson = httpResponse.Result.Content.ReadAsStringAsync();
-                SIGN_CONFIG_REPLY rv = JsonConvert.DeserializeObject<SIGN_CONFIG_REPLY>(responseAsJson.Result);
-                return rv;
+                SIGN_CONFIG_REPLY? rv = JsonConvert.DeserializeObject<SIGN_CONFIG_REPLY>(responseAsJson.Result);
+                if (rv != null)
+                {
+                    return rv;
+                }
+                return new SIGN_CONFIG_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
             }
             catch
             {
                 return new SIGN_CONFIG_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
+            }
+        }
+
+        // ============================================================================
+        public static SIGN_PDF_REPLY SIGN_MULTI_PDF(string serverURL, string accessToken, MULTI_SIGN_PDF_REQUEST request, int timeout = 3)
+        {
+            try
+            {
+                string requestAsJson = JsonConvert.SerializeObject(request);
+                string finalURL = $"{serverURL}/signmultipdf";
+                HttpClient httpClient = new HttpClient();
+                httpClient.Timeout = new TimeSpan(0, 0, timeout);
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, finalURL);
+                httpRequest.Content = new StringContent(requestAsJson, Encoding.UTF8, "application/json");
+                Task<HttpResponseMessage> httpResponse = httpClient.SendAsync(httpRequest);
+                Task<string> responseAsJson = httpResponse.Result.Content.ReadAsStringAsync();
+                SIGN_PDF_REPLY? rv = JsonConvert.DeserializeObject<SIGN_PDF_REPLY>(responseAsJson.Result);
+                if (rv != null)
+                {
+                    return rv;
+                }
+                return new SIGN_PDF_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
+            }
+            catch
+            {
+                return new SIGN_PDF_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
+            }
+        }
+        // ============================================================================
+        public static SIGN_PDF_REPLY SIGN_IMAGE(string serverURL, string accessToken, SIGN_IMAGE_REQUEST request, int timeout = 3)
+        {
+            try
+            {
+                string requestAsJson = JsonConvert.SerializeObject(request);
+                string finalURL = $"{serverURL}/signimage";
+                HttpClient httpClient = new HttpClient();
+                httpClient.Timeout = new TimeSpan(0, 0, timeout);
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, finalURL);
+                httpRequest.Content = new StringContent(requestAsJson, Encoding.UTF8, "application/json");
+                Task<HttpResponseMessage> httpResponse = httpClient.SendAsync(httpRequest);
+                Task<string> responseAsJson = httpResponse.Result.Content.ReadAsStringAsync();
+                SIGN_PDF_REPLY? rv = JsonConvert.DeserializeObject<SIGN_PDF_REPLY>(responseAsJson.Result);
+                if (rv != null)
+                {
+                    return rv;
+                }
+                return new SIGN_PDF_REPLY
+                {
+                    return_code = 1,
+                    return_msg = "Cant make REST call"
+                };
+            }
+            catch
+            {
+                return new SIGN_PDF_REPLY
                 {
                     return_code = 1,
                     return_msg = "Cant make REST call"
